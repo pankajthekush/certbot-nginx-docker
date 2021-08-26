@@ -1,2 +1,2 @@
-# certbot-nginx-docker
-Auto generate certificates for nginx via docker
+# license-server
+Manage lets encrypt license
