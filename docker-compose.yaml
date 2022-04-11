@@ -1,17 +1,18 @@
-version: '3.3'
+version: '3'
 
 services:
-    certify:
-        image: pkumdev/certbot
-        container_name: certbot
-        command: >
-                 /bin/sh -c "service nginx start;tail -f /dev/null"
-        
-        ports:
-                - "80:80"
-                - "443:443"
-        volumes:
-                - ./etcdata:/etc/letsencrypt
-                - ./vardata:/var/lib/letsencrypt'
-                - ./logs:/var/log/nginx
-                - ./default:/etc/nginx/sites-enabled/default
+  webserver:
+    image: nginx:1.20
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
